@@ -49,7 +49,7 @@ const Register = () => {
             className="py-8 flex flex-col gap-5"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <div className="flex gap-2">
+            <div className="flex flex-col lg:flex-row gap-2">
               <TextInputField
                 name="firstName"
                 placeholder="First Name"
@@ -115,6 +115,16 @@ const Register = () => {
               })}
               error={errors.confirmPassword?.message}
             />
+
+            {isSubmitting ? (
+              <Loading />
+            ) : (
+              <CustomButton
+                type="submit"
+                containerStyles={`inline-flex justify-center rounded-md bg-blue px-8 py-3 text-sm font-medium text-white outline-none`}
+                title="Login"
+              />
+            )}
           </form>
 
           <p className="text-ascent-2 text-sm text-center">
