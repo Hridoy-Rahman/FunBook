@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { user } from "../assets/data";
 
 // Get the user from localStorage
 const userFromStorage = window?.localStorage.getItem("user");
 
 const initialState = {
-    user: userFromStorage ? JSON.parse(userFromStorage) : {}, // Parse only if not null
+    user: userFromStorage ? JSON.parse(userFromStorage) : user, 
     edit: false,
 };
 
@@ -33,6 +34,12 @@ export function userLogin(user) {
         dispatch(userSlice.actions.login(user));
     };
 }
+
+export function Logout() {
+    return (dispatch, getState) => {
+      dispatch(userSlice.actions.logout());
+    };
+  }
 
 export function updateProfile(value) {
     return (dispatch) => {
