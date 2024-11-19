@@ -2,10 +2,7 @@ import React, { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 const TextInputField = React.forwardRef(
-  (
-    { type, styles, placeholder, label, labelStyles, register, name, error },
-    ref
-  ) => {
+  ({ type, styles, placeholder, label, labelStyles, register, name, error }, ref) => {
     const [showPassword, setShowPassword] = useState(false);
 
     const togglePasswordVisibility = () => {
@@ -26,9 +23,8 @@ const TextInputField = React.forwardRef(
             ref={ref}
             className={`bg-secondary rounded border border-[#66666690] outline-none text-sm text-ascent-1 px-4 py-3 placeholder:text-[#666] ${styles}`}
             {...register}
-            aria-invalid={error ? "true" : "false"}
+            aria-invalid={!!error}
           />
-          {/* Password Toggle Icon */}
           {type === "password" && (
             <div
               className="absolute right-4 top-3 text-gray-500 cursor-pointer"
@@ -39,7 +35,7 @@ const TextInputField = React.forwardRef(
           )}
         </div>
 
-        {error && <p className="text-xs text-[#f64949fe] mt-0.5">{error.message}</p>}
+        {error && <p className="text-xs text-[#f64949fe] mt-0.5">{error}</p>}
       </div>
     );
   }
