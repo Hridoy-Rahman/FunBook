@@ -21,18 +21,18 @@ const Navbar = () => {
   const handleSearch = async (data) => {};
 
   return (
-    <div className="topbar w-full flex items-center justify-between py-3 md:py-6 px-4 bg-primary">
+    <div className="topbar w-full flex justify-between px-2 py-2 items-center bg-primary">
       <Link to="/" className="flex gap-2 items-center">
         <div className="p-1 md:p-2 bg-[#065ad8] rounded text-white">
           <TbSocial />
         </div>
         <span className="text-xl md:text-2xl text-[#065ad8] font-semibold">
-          ShareFun
+          FunBook
         </span>
       </Link>
 
       <form
-        className="hidden md:flex items-center justify-center"
+        className="hidden md:flex items-center justify-center pb-2"
         onSubmit={handleSubmit(handleSearch)}
       >
         <TextInputField
