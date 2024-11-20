@@ -1,35 +1,53 @@
 /* eslint-disable no-unused-vars */
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Navbar, ProfileCard } from '../components'
+import { CustomButton, Navbar, noProfile, ProfileCard } from '../components'
 import FriendsCard from '../components/FriendsCard'
+import { BsPersonFillAdd } from 'react-icons/bs'
+import { Link } from 'react-router-dom'
+import FriendRequest from '../components/FriendRequest'
+import { suggest, requests, posts } from "../assets/data";
+import FriendSuggestion from '../components/FriendSuggestion'
+
+
 
 const Home = () => {
+  console.log(suggest)
+  const { user, edit } = useSelector((state) => state.user);
+  const [friendRequest, setFriendRequest] = useState(requests);
+  const [suggestedFriends, setSuggestedFriends] = useState(suggest);
+  const [errMsg, setErrMsg] = useState("");
+  const [file, setFile] = useState(null);
+  const [posting, setPosting] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const {user} = useSelector(state => state.user)
   return (
     <div className='w-full px-0  bg-bgColor'>
       <Navbar/>
 
 
-      <div className='w-full flex gap-2 lg:gap-4 pt-5 pb-10 h-full'>
+      <div className='w-full flex gap-2 lg:px-20 lg:gap-4 pt-5 pb-10 h-full'>
         {/* LEFT */}
-        <div className='mx-4 flex flex-col gap-4 py-4'>
+        <div className='w-1/4 flex flex-col gap-4 py-4'>
         <ProfileCard user={user} />
         <FriendsCard friends={user?.friends}/>
         </div>
 
         {/* CENTER */}
 
-        <div>
+        <div className='flex-1 h-full px-4 flex flex-col gap-6 overflow-y-auto rounded-lg'>
 
         </div>
 
         {/* RIGHT */}
-        <div>
+        <div className='hidden w-1/4 h-full lg:flex flex-col pt-5 pb-10 gap-8 overflow-y-auto'>
+            {/* FRIEND REQUEST */}
+            <FriendRequest request= {friendRequest}/>
 
-        </div>
+            {/* SUGGESTED FRIENDS */}
+            <FriendSuggestion suggestion={suggest}/>
       </div>
+    </div>
     </div>
   )
 }

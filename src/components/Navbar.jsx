@@ -21,7 +21,7 @@ const Navbar = () => {
   const handleSearch = async (data) => {};
 
   return (
-    <div className="topbar w-full flex justify-between px-2 py-2 items-center bg-primary">
+    <div className="topbar w-full flex justify-between px-2 py-2 lg:px-20 items-center bg-primary">
       <Link to="/" className="flex gap-2 items-center">
         <div className="p-1 md:p-2 bg-[#065ad8] rounded text-white">
           <TbSocial />
