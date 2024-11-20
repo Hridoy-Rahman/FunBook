@@ -8,7 +8,7 @@ const FriendSuggestion = ({ suggestion }) => {
   return (
     <div className="w-full bg-primary shadow-sm rounded-lg px-5 py-5">
       <div className="flex items-center justify-between text-lg text-ascent-1 border-b border-[#66666645]">
-        <span>Friend Suggestion</span>
+        <span className="mb-2">Friend Suggestion</span>
       </div>
       <div className="w-full flex flex-col gap-4 pt-4">
         {suggestion?.map((friend) => (

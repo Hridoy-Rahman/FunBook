@@ -1,18 +1,17 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { CustomButton, Navbar, noProfile, ProfileCard } from '../components'
+import { CustomButton, Loading, Navbar, noProfile, ProfileCard } from '../components'
 import FriendsCard from '../components/FriendsCard'
-import { BsPersonFillAdd } from 'react-icons/bs'
-import { Link } from 'react-router-dom'
 import FriendRequest from '../components/FriendRequest'
 import { suggest, requests, posts } from "../assets/data";
 import FriendSuggestion from '../components/FriendSuggestion'
+import Post from '../components/Post'
+import PostCard from '../components/PostCard'
 
 
 
 const Home = () => {
-  console.log(suggest)
   const { user, edit } = useSelector((state) => state.user);
   const [friendRequest, setFriendRequest] = useState(requests);
   const [suggestedFriends, setSuggestedFriends] = useState(suggest);
@@ -35,7 +34,8 @@ const Home = () => {
 
         {/* CENTER */}
 
-        <div className='flex-1 h-full px-4 flex flex-col gap-6 overflow-y-auto rounded-lg'>
+        <div className='flex-1 h-full px-4 flex flex-col gap-6 overflow-y-auto rounded-lg pt-5'>
+          <Post user={user} post={posts}/>
 
         </div>
 
