@@ -8,8 +8,8 @@ import { MdOutlineDeleteOutline } from "react-icons/md";
 import Loading from "./Loading";
 import { postComments } from "../assets/data";
 import { noProfile } from ".";
-import ReplyForm from "./ReplyForm";
 import CommentForm from "./CommentForm";
+import ReplyCard from "./ReplyCard";
 
 const PostCard = ({ post, user, deletePost, likePost }) => {
   const [showAll, setShowAll] = useState(0);
@@ -108,7 +108,7 @@ const PostCard = ({ post, user, deletePost, likePost }) => {
           }}
         >
           <BiComment size={20} />
-          {post?.comments?.length} Comments
+          {post?.comments?.length}{console.log(post?.comments.length)} Comments
         </p>
 
         {user?._id === post?.userId?._id && (
@@ -206,7 +206,7 @@ const PostCard = ({ post, user, deletePost, likePost }) => {
 
                   {showReply === comment?.replies?._id &&
                     comment?.replies?.map((reply) => (
-                      <ReplyForm
+                      <ReplyCard
                         reply={reply}
                         user={user}
                         key={reply?._id}
