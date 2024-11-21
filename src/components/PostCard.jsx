@@ -1,4 +1,4 @@
-//PostCard
+
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
@@ -8,7 +8,7 @@ import { MdOutlineDeleteOutline } from "react-icons/md";
 import Loading from "./Loading";
 import { postComments } from "../assets/data";
 import { noProfile } from ".";
-import ReplyCard from "./ReplyCard";
+import ReplyForm from "./ReplyForm";
 import CommentForm from "./CommentForm";
 
 const PostCard = ({ post, user, deletePost, likePost }) => {
@@ -206,7 +206,7 @@ const PostCard = ({ post, user, deletePost, likePost }) => {
 
                   {showReply === comment?.replies?._id &&
                     comment?.replies?.map((reply) => (
-                      <ReplyCard
+                      <ReplyForm
                         reply={reply}
                         user={user}
                         key={reply?._id}
