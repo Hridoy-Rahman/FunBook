@@ -108,7 +108,7 @@ const PostCard = ({ post, user, deletePost, likePost }) => {
           }}
         >
           <BiComment size={20} />
-          {post?.comments?.length}{console.log(post?.comments.length)} Comments
+          {post?.comments?.length} Comments
         </p>
 
         {user?._id === post?.userId?._id && (
