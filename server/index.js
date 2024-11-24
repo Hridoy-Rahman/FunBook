@@ -6,6 +6,7 @@ import bodyParser from "body-parser";
 
 import helmet from "helmet"
 import dbConnection from "./dbConfig/index.js";
+import errorMiddlewares from "./middleware/errorMiddleware.js";
 
 
 dotenv.config();
@@ -25,6 +26,8 @@ app.use(express.urlencoded({extended: true}));
 
 
 app.use(morgan("dev"));
+
+app.use(errorMiddlewares)
 
 app.listen(PORT, () =>{
     console.log(`Server is running on Port: ${PORT}`)
