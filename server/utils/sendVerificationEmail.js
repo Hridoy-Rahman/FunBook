@@ -1,16 +1,15 @@
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 import { v4 as uuidv4 } from "uuid";
-import { hash } from "bcryptjs";
-import { hashString } from ".";
-import Verification from "../models/emailVerificationModel";
+import { hashString } from "../utils/index.js";
+import Verification from "../models/emailVerificationModel.js";
 
 dotenv.config();
 
 const { AUTH_EMAIL, AUTH_PASSWORD, APP_URL } = process.env;
 
 let transporter = nodemailer.createTransport({
-  host: "smtp-mail.outlook.com",
+  service: "gmail",
   auth: {
     user: AUTH_EMAIL,
     pass: AUTH_PASSWORD,
@@ -24,8 +23,7 @@ export const sendVerificationEmail = async (user, res) => {
 
   const link = APP_URL + "users/verify/" + _id + "/" + token;
 
-  // mail option
-
+  //   mail options
   const mailOptions = {
     from: AUTH_EMAIL,
     to: email,
@@ -35,50 +33,49 @@ export const sendVerificationEmail = async (user, res) => {
     <h3 style="color: rgb(8, 56, 188)">Please verify your email address</h3>
     <hr>
     <h4>Hi ${lastName},</h4>
-        <p>
+    <p>
         Please verify your email address so we can know that it's really you.
         <br>
-        <p>This link <b>expires in 1 hour</b></p>
-        <br>
-        <a href=${link}
+    <p>This link <b>expires in 1 hour</b></p>
+    <br>
+    <a href=${link}
         style="color: #fff; padding: 14px; text-decoration: none; background-color: #000;  border-radius: 8px; font-size: 18px;">Verify
-        Email Address
-        </a>
-        </p>
-        <div style="margin-top: 20px;">
-            <h5>Best Regards</h5>
-            <h5>ShareFun Team</h5>
-        </div>
-    </div>`,
+        Email Address</a>
+    </p>
+    <div style="margin-top: 20px;">
+        <h5>Best Regards</h5>
+        <h5>ShareFun Team</h5>
+    </div>
+</div>`,
   };
 
-  try{
-
-    const hashedToken =  await hashString(token);
+  try {
+    const hashedToken = await hashString(token);
 
     const newVerifiedEmail = await Verification.create({
-        userId: _id,
-        token: hashedToken,
-        createdAt: Date.now(),
-        expiredAt: Date.now() + 3600000,
-    })
+      userId: _id,
+      token: hashedToken,
+      createdAt: Date.now(),
+      expiresAt: Date.now() + 3600000,
+    });
 
-    if(newVerifiedEmail){
-        transporter.sendMail(mailOptions).then(()=>{
-            res.status(201).send({
-                success: "Pending",
-                message: "Verification email has been sent to your accout. Check your email",
-            });
-           
+    if (newVerifiedEmail) {
+      transporter
+        .sendMail(mailOptions)
+        .then(() => {
+          res.status(201).send({
+            success: "PENDING",
+            message:
+              "Verification email has been sent to your account. Check your email for further instructions.",
+          });
         })
-        .catch((error)=>{
-            console.log(error);
-            res.status(404).json({message: "Something went wrong"});
-        })
+        .catch((err) => {
+          console.log(err);
+          res.status(404).json({ message: "Something went wrong" });
+        });
     }
-  }
-  catch(error) {
+  } catch (error) {
     console.log(error);
-    res.status(404).json({message: "SOmething went wrong"});
+    res.status(404).json({ message: "Something went wrong" });
   }
 };

@@ -7,13 +7,15 @@ import bodyParser from "body-parser";
 import helmet from "helmet"
 import dbConnection from "./dbConfig/index.js";
 import errorMiddlewares from "./middleware/errorMiddleware.js";
+import router from "./routes/index.js";
+
 
 
 dotenv.config();
 
 const app = express()
 
-const PORT = process.env.PORT || 8000
+const PORT = process.env.PORT || 5001
 
 dbConnection()
 
@@ -26,6 +28,7 @@ app.use(express.urlencoded({extended: true}));
 
 
 app.use(morgan("dev"));
+app.use(router);
 
 app.use(errorMiddlewares)
 
