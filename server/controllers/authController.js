@@ -46,53 +46,62 @@ export const register = async (req, res, next)=>{
 
 
 export const login = async (req, res, next) => {
-    const { email, password } = req.body;
-  
-    try {
-      //validation
-      if (!email || !password) {
-        next("Please Provide User Credentials");
-        return;
-      }
-  
-      // find user by email
-      const user = await Users.findOne({ email }).select("+password").populate({
-        path: "friends",
-        select: "firstName lastName location profileUrl -password",
+  const { email, password } = req.body;
+
+  try {
+    // Validation
+    if (!email || !password) {
+      return res.status(400).json({
+        success: "failed",
+        message: "Please Provide User Credentials",
       });
-  
-      if (!user) {
-        next("Invalid email or password");
-        return;
-      }
-  
-      if (!user?.verified) {
-        next(
-          "User email is not verified. Check your email account and verify your email"
-        );
-        return;
-      }
-  
-      // compare password
-      const isMatch = await compareString(password, user?.password);
-  
-      if (!isMatch) {
-        next("Invalid email or password");
-        return;
-      }
-  
-      user.password = undefined;
-  
-      const token = createJWT(user?._id);
-  
-      res.status(201).json({
-        success: true,
-        message: "Login successfully",
-        user,
-        token,
-      });
-    } catch (error) {
-      console.log(error);
-      res.status(404).json({ message: error.message });
     }
-  };
+
+    // Find user by email
+    const user = await Users.findOne({ email }).select("+password").populate({
+      path: "friends",
+      select: "firstName lastName location profileUrl -password",
+    });
+
+    if (!user) {
+      return res.status(400).json({
+        success: "failed",
+        message: "Invalid email or password",
+      });
+    }
+
+    if (!user?.verified) {
+      return res.status(400).json({
+        success: "failed",
+        message: "User email is not verified. Check your email account and verify your email",
+      });
+    }
+
+    // Compare password
+    const isMatch = await compareString(password, user?.password);
+
+    if (!isMatch) {
+      return res.status(400).json({
+        success: "failed",
+        message: "Invalid email or password",
+      });
+    }
+
+    user.password = undefined;
+
+    const token = createJWT(user?._id);
+
+    return res.status(200).json({
+      success: true,
+      message: "Login successfully",
+      user,
+      token,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: "failed",
+      message: error.message || "Something went wrong",
+    });
+  }
+};

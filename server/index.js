@@ -8,6 +8,9 @@ import helmet from "helmet"
 import dbConnection from "./dbConfig/index.js";
 import errorMiddlewares from "./middleware/errorMiddleware.js";
 import router from "./routes/index.js";
+import path from "path";
+
+const __dirname = path.resolve(path.dirname(""))
 
 
 
@@ -15,7 +18,9 @@ dotenv.config();
 
 const app = express()
 
-const PORT = process.env.PORT || 5001
+app.use(express.static(path.join(__dirname,"views/build")));
+
+const PORT = process.env.PORT || 5000
 
 dbConnection()
 
