@@ -6,6 +6,7 @@ import {
   friendRequest,
   getFriendRequest,
   getUser,
+  profileViews,
   requestPasswordReset,
   resetPassword,
   updateUser,
@@ -35,6 +36,10 @@ router.post("/get-friend-request", userAuth, getFriendRequest);
 
 // accept / deny friend request
 router.post("/accept-request", userAuth, acceptRequest);
+
+// view profile
+router.post("/profile-view", userAuth, profileViews);
+
 
 router.get("/verified", (req, res) => {
   res.sendFile(path.join(__dirname, "./views/build", "index.html"));

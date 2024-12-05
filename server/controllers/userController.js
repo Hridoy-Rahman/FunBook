@@ -371,3 +371,30 @@ export const acceptRequest = async (req, res, next) => {
     });
   }
 };
+
+export const profileViews = async (req, res, next) => {
+  try {
+    const { userId } = req.body.user;
+    const { id } = req.body;
+
+    const user = await Users.findById(id);
+
+    user.views.push(userId);
+
+    await user.save();
+
+    res.status(201).json({
+      success: true,
+      message: "Successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "auth error",
+      success: false,
+      error: error.message,
+    });
+  }
+};
+
+
