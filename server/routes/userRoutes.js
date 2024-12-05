@@ -9,6 +9,7 @@ import {
   profileViews,
   requestPasswordReset,
   resetPassword,
+  suggestedFriends,
   updateUser,
   verifyEmail,
 } from "../controllers/userController.js";
@@ -40,6 +41,8 @@ router.post("/accept-request", userAuth, acceptRequest);
 // view profile
 router.post("/profile-view", userAuth, profileViews);
 
+//suggested friends
+router.post("/suggested-friends", userAuth, suggestedFriends);
 
 router.get("/verified", (req, res) => {
   res.sendFile(path.join(__dirname, "./views/build", "index.html"));
