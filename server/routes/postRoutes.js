@@ -1,18 +1,23 @@
 import express from "express"
 import userAuth from "../middleware/authMiddleware.js"
-import { createPost, getComments, getPosts, getSinglePost, getUserPost } from "../controllers/postController.js";
+import { createPost, getComments, getPosts, getSinglePost, getUserPost, likePost } from "../controllers/postController.js";
 
 const router = express.Router();
 
 // create post
 router.post("/create-post",userAuth,createPost)
 
-router.post("/get-all-posts",userAuth,getPosts)
+// get posts
+router.post("/", userAuth, getPosts);
+router.post("/:id", userAuth, getSinglePost);
 
-router.post("/get-single-post",userAuth,getSinglePost)
+router.post("/get-user-post/:id", userAuth, getUserPost);
 
+// get comments
+router.get("/comments/:postId", getComments);
 
-router.post("/get-user-post",userAuth,getUserPost)
-router.post("/get-comments",userAuth,getComments)
+//like and comment on posts
+router.post("/like/:id", userAuth, likePost);
+
 
 export default router;
