@@ -171,21 +171,26 @@ export const likePost = async (req, res, next) => {
 
     const post = await Posts.findById(id);
 
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    // Initialize likes as an empty array if it is null or undefined
+    post.likes = post.likes || [];
+
     const index = post.likes.findIndex((pid) => pid === String(userId));
 
     if (index === -1) {
-      post.likes.push(userId);
+      post.likes.push(userId); // Add the userId if not found in likes
     } else {
-      post.likes = post.likes.filter((pid) => pid !== String(userId));
+      post.likes = post.likes.filter((pid) => pid !== String(userId)); // Remove the userId if already liked
     }
 
-    const newPost = await Posts.findByIdAndUpdate(id, post, {
-      new: true,
-    });
+    const newPost = await Posts.findByIdAndUpdate(id, post, { new: true });
 
     res.status(200).json({
-      sucess: true,
-      message: "successfully",
+      success: true,
+      message: "Successfully updated post likes",
       data: newPost,
     });
   } catch (error) {
@@ -251,6 +256,83 @@ export const likePostComment = async (req, res, next) => {
 
       res.status(201).json(result);
     }
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ message: error.message });
+  }
+};
+
+export const commentPost = async (req, res, next) => {
+  try {
+    const { comment, from } = req.body;
+    const { userId } = req.body.user;
+    const { id } = req.params;
+
+    if (comment === null) {
+      return res.status(404).json({ message: "Comment is required." });
+    }
+
+    const newComment = new Comments({ comment, from, userId, postId: id });
+
+    await newComment.save();
+
+    //updating the post with the comments id
+    const post = await Posts.findById(id);
+
+    post.comments.push(newComment._id);
+
+    const updatedPost = await Posts.findByIdAndUpdate(id, post, {
+      new: true,
+    });
+
+    res.status(201).json(newComment);
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ message: error.message });
+  }
+};
+
+
+export const replyPostComment = async (req, res, next) => {
+  const { userId } = req.body.user;
+  const { comment, replyAt, from } = req.body;
+  const { id } = req.params;
+
+  if (comment === null) {
+    return res.status(404).json({ message: "Comment is required." });
+  }
+
+  try {
+    const commentInfo = await Comments.findById(id);
+
+    commentInfo.replies.push({
+      comment,
+      replyAt,
+      from,
+      userId,
+      created_At: Date.now(),
+    });
+
+    commentInfo.save();
+
+    res.status(200).json(commentInfo);
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ message: error.message });
+  }
+};
+
+
+export const deletePost = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    await Posts.findByIdAndDelete(id);
+
+    res.status(200).json({
+      success: true,
+      message: "Deleted successfully",
+    });
   } catch (error) {
     console.log(error);
     res.status(404).json({ message: error.message });
