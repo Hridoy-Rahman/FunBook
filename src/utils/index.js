@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import axios from "axios";
 import { SetPosts } from "../redux/postSlice.js";
 
@@ -44,18 +45,19 @@ export const handleFileUpload = async (uploadFile) => {
   }
 };
 
-export const fetchPosts = async (token, dispatch, url, data) => {
+export const fetchPosts = async (token, dispatch, uri, data) => {
   try {
     const res = await apiRequest({
-      url: url || "/posts",
+      url: uri || "/posts",
       token: token,
       method: "POST",
       data: data || {},
     });
     dispatch(SetPosts(res?.data));
+    console.log(res?.data)
     return;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -136,5 +138,3 @@ export const viewUserProfile = async (token, id) => {
     console.log(error);
   }
 };
-
-

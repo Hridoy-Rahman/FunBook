@@ -4,7 +4,7 @@ import { CustomButton, Loading, noProfile, TextInputField } from ".";
 import { useForm } from "react-hook-form";
 import { BiSolidVideo, BiImages } from "react-icons/bi";
 import { BsFiletypeGif } from "react-icons/bs";
-import { apiRequest, fetchPosts, handleFileUpload } from "../utils";
+import { apiRequest,handleFileUpload } from "../utils";
 
 const Post = ({ posts, user }) => {
   const [errMsg, setErrMsg] = useState("");
@@ -42,7 +42,7 @@ const handlePostSubmit = async (data) => {
         });
         setFile(null);
         setErrMsg("");
-        await fetchPosts();
+        // await fetchPost();
       }
 
       setPosting(false)
