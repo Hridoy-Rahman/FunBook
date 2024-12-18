@@ -8,8 +8,13 @@ import { BsShare } from "react-icons/bs";
 import { ImConnection } from "react-icons/im";
 import { AiOutlineInteraction } from "react-icons/ai";
 import { useDispatch } from "react-redux";
+import { apiRequest } from "../utils";
 
 const Register = () => {
+  
+  const [errMsg, setErrMsg] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -20,12 +25,32 @@ const Register = () => {
   });
 
   const onSubmit = async (data) => {
-    console.log("Form Data:", data);
+    setIsSubmitting(true);
+
+    try {
+      const res =await apiRequest({
+        url: "/auth/register",
+        data: data,
+        method: "POST", 
+
+      })
+
+      if(res?.status === "failed"){
+        setErrMsg(res);
+      }
+      else{
+        setErrMsg(res);
+        setInterval(()=>{
+          window.location.replace("/login");
+        },2000);
+        setIsSubmitting(false);
+      }
+    } catch (error) {
+      console.log(error);
+      setIsSubmitting(false);
+    }
   };
 
-  const [errMsg, setErrMsg] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const dispatch = useDispatch();
 
   return (
     <div className="bg-bgColor w-full h-[100vh] flex items-center justify-center p-6">
