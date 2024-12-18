@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { CustomButton, Loading, TextInputField } from "../components/index";
+import { apiRequest } from "../utils";
 
 const ResetPassword = () => {
   const [errMsg, setErrMsg] = useState("");
@@ -16,7 +17,31 @@ const ResetPassword = () => {
     mode: "onChange",
   });
 
-  const onSubmit = async (data) => {};
+  const onSubmit = async (data) => {
+     setIsSubmitting(true);
+     console.log(data)
+     
+         try {
+           const res =await apiRequest({
+             url: "/users/request-passwordreset",
+             data: data,
+             method: "POST", 
+     
+           })
+     
+           if(res?.status === "failed"){
+             setErrMsg(res);
+           }
+           else{
+             setErrMsg(res);
+           }
+           setIsSubmitting(false)
+         } catch (error) {
+           console.log(error);
+           setIsSubmitting(false);
+         }
+
+  };
 
   return (
     <div className='w-full h-[100vh] bg-bgColor flex items-center justify-center p-6'>
