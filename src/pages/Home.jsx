@@ -15,7 +15,7 @@ import { suggest, requests } from "../assets/data";
 import FriendSuggestion from "../components/FriendSuggestion";
 import PostCard from "../components/PostCard";
 import EditProfile from "../components/EditProfile";
-import { apiRequest, fetchPosts, handleFileUpload } from "../utils";
+import { apiRequest, fetchPosts, handleFileUpload, likePost } from "../utils";
 import { useForm } from "react-hook-form";
 import { BiImages, BiSolidVideo } from "react-icons/bi";
 import { BsFiletypeGif } from "react-icons/bs";
@@ -76,6 +76,12 @@ const Home = () => {
       await fetchPosts(user?.token, dispatch);
       setLoading(false)
     }
+
+  const handleLikePost = async (uri) => {
+    await likePost({uri:uri, token: user?.token});
+    await fetchPost();
+  };
+
 
   useEffect(() => {
     setLoading(true);
@@ -200,7 +206,7 @@ const Home = () => {
                   post={post}
                   user={user}
                   deletePost={() => {}}
-                  likePost={() => {}}
+                  likePost={handleLikePost}
                 />
               ))
             ) : (
