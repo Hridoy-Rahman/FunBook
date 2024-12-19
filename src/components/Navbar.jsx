@@ -7,6 +7,7 @@ import TextInputField from "./TextInputField";
 import CustomButton from "./CustomButton";
 import { useForm } from "react-hook-form";
 import { Logout } from "../redux/userSlice";
+import { fetchPosts } from "../utils";
 
 const Navbar = () => {
   const { user } = useSelector((state) => state.user);
@@ -18,7 +19,9 @@ const Navbar = () => {
   } = useForm();
 
 
-  const handleSearch = async (data) => {};
+  const handleSearch = async (data) => {
+    await fetchPosts(user?.token,dispatch,"",data)
+  };
 
   return (
     <div className="topbar w-full flex justify-between px-2 py-2 lg:px-20 items-center bg-primary">
