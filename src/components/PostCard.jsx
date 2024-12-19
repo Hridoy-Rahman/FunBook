@@ -6,10 +6,10 @@ import moment from "moment";
 import { BiComment, BiLike, BiSolidLike } from "react-icons/bi";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import Loading from "./Loading";
-import { postComments } from "../assets/data";
 import { noProfile } from ".";
 import CommentForm from "./CommentForm";
 import ReplyCard from "./ReplyCard";
+import { apiRequest } from "../utils";
 
 const PostCard = ({ post, user, deletePost, likePost }) => {
   const [showAll, setShowAll] = useState(0);
@@ -19,10 +19,24 @@ const PostCard = ({ post, user, deletePost, likePost }) => {
   const [replyComments, setReplyComments] = useState(0);
   const [showComments, setShowComments] = useState(0);
 
-  const getComments = async () => {
+  const getPostComment = async(id)=>{
+    try {
+      const res  = await apiRequest({
+        url: "/posts/comments/" + id,
+        method: "GET",
+      })
+
+      return res?.data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const getComments = async (id) => {
     setReplyComments(0);
 
-    setComments(postComments);
+    const result = await getPostComment(id)
+
+    setComments(result);
     setLoading(false);
   };
   const handleLike = async (uri) => {
@@ -164,7 +178,10 @@ const PostCard = ({ post, user, deletePost, likePost }) => {
                   <p className="text-ascent-2">{comment?.comment}</p>
 
                   <div className="mt-2 flex gap-6">
-                    <p className="flex gap-2 items-center text-base text-ascent-2 cursor-pointer">
+                    <p className="flex gap-2 items-center text-base text-ascent-2 cursor-pointer"
+                    onClick={()=>{
+                      handleLike("/posts/like-comment/" +comment?._id)
+                    }}>
                       {comment?.likes?.includes(user?._id) ? (
                         <BiSolidLike size={20} color="blue" />
                       ) : (

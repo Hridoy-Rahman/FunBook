@@ -14,10 +14,11 @@ import FriendRequest from "../components/FriendRequest";
 import FriendSuggestion from "../components/FriendSuggestion";
 import PostCard from "../components/PostCard";
 import EditProfile from "../components/EditProfile";
-import { apiRequest, deletePost, fetchPosts, handleFileUpload, likePost } from "../utils";
+import { apiRequest, deletePost, fetchPosts, getUserInfo, handleFileUpload, likePost, sendFriendRequest } from "../utils";
 import { useForm } from "react-hook-form";
 import { BiImages, BiSolidVideo } from "react-icons/bi";
 import { BsFiletypeGif } from "react-icons/bs";
+import { userLogin } from "../redux/userSlice";
 
 const Home = () => {
   const { user, edit } = useSelector((state) => state.user);
@@ -95,7 +96,6 @@ const Home = () => {
       })
 
       setFriendRequest(res?.data);
-      console.log(res.data)
     } catch (error) {
       console.log(error)
     }
@@ -109,10 +109,37 @@ const Home = () => {
       })
 
       setSuggestedFriends(res?.data);
-      console.log(res.data)
     } catch (error) {
       console.log(error)
     }
+  };
+
+  const handleFriendRequest = async (id) => {
+    try {
+      const res = await sendFriendRequest(user.token, id);
+      await fetchFriendRequest();
+    } catch (error) {
+      console.log(error)
+    }
+  };
+  const acceptFriendRequest = async (id,status) => {
+    try {
+      const res = await apiRequest({
+        url: "/users/accept-request",
+        token: user?.token,
+        method: "POST",
+        data:{ rid:id,status}
+      });
+      setFriendRequest(res?.data);
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
+  const getUser = async () => {
+    const res = await getUserInfo(user?.token);
+    const newData = {token:user?.token,...res};
+    dispatch(userLogin(newData));
   };
 
   useEffect(() => {
@@ -120,6 +147,7 @@ const Home = () => {
     fetchPost();
     fetchFriendRequest();
     fetchSuggestedFriend();
+    getUser()
   }, []);
   return (
     <>
@@ -253,10 +281,10 @@ const Home = () => {
           {/* RIGHT */}
           <div className="hidden w-1/4 h-full lg:flex flex-col pt-5 pb-10 gap-8 overflow-y-auto">
             {/* FRIEND REQUEST */}
-            <FriendRequest request={friendRequest} />
+            <FriendRequest request={friendRequest} handleFriendRequest={acceptFriendRequest} />
 
             {/* SUGGESTED FRIENDS */}
-            <FriendSuggestion suggestion={suggestedFriends} />
+            <FriendSuggestion suggestion={suggestedFriends} handleRequest={handleFriendRequest}/>
           </div>
         </div>
       </div>

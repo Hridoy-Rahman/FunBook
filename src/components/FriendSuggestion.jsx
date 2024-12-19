@@ -3,8 +3,7 @@ import { Link } from "react-router-dom";
 import { noProfile } from ".";
 import { BsPersonFillAdd } from "react-icons/bs";
 
-const FriendSuggestion = ({ suggestion }) => {
-  console.log(suggestion);
+const FriendSuggestion = ({ suggestion,handleRequest }) => {
   return (
     <div className="w-full bg-primary shadow-sm rounded-lg px-5 py-5">
       <div className="flex items-center justify-between text-lg text-ascent-1 border-b border-[#66666645]">
@@ -36,7 +35,7 @@ const FriendSuggestion = ({ suggestion }) => {
             <div className="flex gap-1">
               <button
                 className="bg-[#0444a430] text-sm text-white p-1 rounded"
-                onClick={() => {}}
+                onClick={() => handleRequest(friend._id)}
               >
                 <BsPersonFillAdd size={20} className="text-[#0f52b6]" />
               </button>

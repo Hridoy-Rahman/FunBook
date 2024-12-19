@@ -3,7 +3,7 @@ import CustomButton from "./CustomButton";
 import { Link } from "react-router-dom";
 import { noProfile } from ".";
 
-const FriendRequest = ({ request }) => {
+const FriendRequest = ({  request, handleFriendRequest  }) => {
   return (
     <div className="w-full bg-primary shadow-sm rounded-lg px-6 py-5">
       <div className="flex items-center justify-between text-xl text-ascent-1 pb-2 border-b border-[#66666645]">
@@ -37,10 +37,12 @@ const FriendRequest = ({ request }) => {
               <CustomButton
                 title="Accept"
                 containerStyles="bg-[#0444a4] text-xs text-white px-1.5 py-1 rounded-full"
+                onClick={() => handleFriendRequest(_id, "Accepted")}
               />
               <CustomButton
                 title="Deny"
                 containerStyles="border border-[#666] text-xs text-ascent-1 px-1.5 py-1 rounded-full"
+                onClick={() => handleFriendRequest(_id, "Denied")}
               />
             </div>
           </div>
