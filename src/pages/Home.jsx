@@ -11,11 +11,10 @@ import {
 } from "../components";
 import FriendsCard from "../components/FriendsCard";
 import FriendRequest from "../components/FriendRequest";
-import { suggest, requests } from "../assets/data";
 import FriendSuggestion from "../components/FriendSuggestion";
 import PostCard from "../components/PostCard";
 import EditProfile from "../components/EditProfile";
-import { apiRequest, fetchPosts, handleFileUpload, likePost } from "../utils";
+import { apiRequest, deletePost, fetchPosts, handleFileUpload, likePost } from "../utils";
 import { useForm } from "react-hook-form";
 import { BiImages, BiSolidVideo } from "react-icons/bi";
 import { BsFiletypeGif } from "react-icons/bs";
@@ -23,8 +22,8 @@ import { BsFiletypeGif } from "react-icons/bs";
 const Home = () => {
   const { user, edit } = useSelector((state) => state.user);
   const { posts } = useSelector((state) => state.post) || {};
-  const [friendRequest, setFriendRequest] = useState(requests);
-  const [suggestedFriends, setSuggestedFriends] = useState(suggest);
+  const [friendRequest, setFriendRequest] = useState([]);
+  const [suggestedFriends, setSuggestedFriends] = useState([]);
   const [errMsg, setErrMsg] = useState("");
   const [file, setFile] = useState(null);
   const [posting, setPosting] = useState(false);
@@ -82,10 +81,45 @@ const Home = () => {
     await fetchPost();
   };
 
+  const handleDeletePost = async (id) => {
+    deletePost(id,user?.token)
+    fetchPost()
+  };
+
+  const fetchFriendRequest = async () => {
+    try {
+      const res = await apiRequest({
+        url: "/users/get-friend-request",
+        token: user?.token,
+        method: "POST"
+      })
+
+      setFriendRequest(res?.data);
+      console.log(res.data)
+    } catch (error) {
+      console.log(error)
+    }
+  };
+  const fetchSuggestedFriend = async () => {
+    try {
+      const res = await apiRequest({
+        url: "/users/suggested-friends",
+        token: user?.token,
+        method: "POST"
+      })
+
+      setSuggestedFriends(res?.data);
+      console.log(res.data)
+    } catch (error) {
+      console.log(error)
+    }
+  };
 
   useEffect(() => {
     setLoading(true);
     fetchPost();
+    fetchFriendRequest();
+    fetchSuggestedFriend();
   }, []);
   return (
     <>
@@ -205,7 +239,7 @@ const Home = () => {
                   key={post?._id}
                   post={post}
                   user={user}
-                  deletePost={() => {}}
+                  deletePost={handleDeletePost}
                   likePost={handleLikePost}
                 />
               ))
@@ -222,7 +256,7 @@ const Home = () => {
             <FriendRequest request={friendRequest} />
 
             {/* SUGGESTED FRIENDS */}
-            <FriendSuggestion suggestion={suggest} />
+            <FriendSuggestion suggestion={suggestedFriends} />
           </div>
         </div>
       </div>

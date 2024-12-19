@@ -74,7 +74,7 @@ export const likePost = async ({ uri, token }) => {
   }
 };
 
-export const deletePost = async ({ id, token }) => {
+export const deletePost = async ( id, token ) => {
   try {
     const res = await apiRequest({
       url: "/posts/" + id,
