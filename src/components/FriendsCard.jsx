@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { noProfile } from ".";
 
 const FriendsCard = ({ friends }) => {
+  const [showAllFriends, setShowAllFriends] = useState(false);
+  
+    const displayedAllFriends = showAllFriends ? friends : friends.slice(0, 3);
   return (
     <div>
       <div className='w-full bg-primary shadow-sm rounded-lg px-6 py-5'>
@@ -12,7 +15,7 @@ const FriendsCard = ({ friends }) => {
         </div>
 
         <div className='w-full flex flex-col gap-4 pt-4'>
-          {friends?.map((friend) => (
+          {displayedAllFriends?.map((friend) => (
             <Link
               to={"/profile/" + friend?._id}
               key={friend?._id}
@@ -35,6 +38,14 @@ const FriendsCard = ({ friends }) => {
           ))}
         </div>
       </div>
+      {friends?.length > 3 && (
+        <button
+          onClick={() => setShowAllFriends(!showAllFriends)}
+          className="mt-4 text-sm text-ascent-2 hover:text-ascent-1"
+        >
+          {showAllFriends ? "See Less" : "See More"}
+        </button>
+      )}
     </div>
   );
 };

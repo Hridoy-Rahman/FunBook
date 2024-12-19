@@ -14,7 +14,15 @@ import FriendRequest from "../components/FriendRequest";
 import FriendSuggestion from "../components/FriendSuggestion";
 import PostCard from "../components/PostCard";
 import EditProfile from "../components/EditProfile";
-import { apiRequest, deletePost, fetchPosts, getUserInfo, handleFileUpload, likePost, sendFriendRequest } from "../utils";
+import {
+  apiRequest,
+  deletePost,
+  fetchPosts,
+  getUserInfo,
+  handleFileUpload,
+  likePost,
+  sendFriendRequest,
+} from "../utils";
 import { useForm } from "react-hook-form";
 import { BiImages, BiSolidVideo } from "react-icons/bi";
 import { BsFiletypeGif } from "react-icons/bs";
@@ -72,19 +80,18 @@ const Home = () => {
   };
 
   const fetchPost = async () => {
-   
-      await fetchPosts(user?.token, dispatch);
-      setLoading(false)
-    }
+    await fetchPosts(user?.token, dispatch);
+    setLoading(false);
+  };
 
   const handleLikePost = async (uri) => {
-    await likePost({uri:uri, token: user?.token});
+    await likePost({ uri: uri, token: user?.token });
     await fetchPost();
   };
 
   const handleDeletePost = async (id) => {
-    deletePost(id,user?.token)
-    fetchPost()
+    deletePost(id, user?.token);
+    fetchPost();
   };
 
   const fetchFriendRequest = async () => {
@@ -92,12 +99,12 @@ const Home = () => {
       const res = await apiRequest({
         url: "/users/get-friend-request",
         token: user?.token,
-        method: "POST"
-      })
+        method: "POST",
+      });
 
       setFriendRequest(res?.data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
   const fetchSuggestedFriend = async () => {
@@ -105,12 +112,12 @@ const Home = () => {
       const res = await apiRequest({
         url: "/users/suggested-friends",
         token: user?.token,
-        method: "POST"
-      })
+        method: "POST",
+      });
 
       setSuggestedFriends(res?.data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
@@ -119,26 +126,26 @@ const Home = () => {
       const res = await sendFriendRequest(user.token, id);
       await fetchFriendRequest();
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
-  const acceptFriendRequest = async (id,status) => {
+  const acceptFriendRequest = async (id, status) => {
     try {
       const res = await apiRequest({
         url: "/users/accept-request",
         token: user?.token,
         method: "POST",
-        data:{ rid:id,status}
+        data: { rid: id, status },
       });
       setFriendRequest(res?.data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
   const getUser = async () => {
     const res = await getUserInfo(user?.token);
-    const newData = {token:user?.token,...res};
+    const newData = { token: user?.token, ...res };
     dispatch(userLogin(newData));
   };
 
@@ -147,22 +154,22 @@ const Home = () => {
     fetchPost();
     fetchFriendRequest();
     fetchSuggestedFriend();
-    getUser()
+    getUser();
   }, []);
   return (
     <>
-      <div className="w-full px-0  bg-bgColor">
+      <div className="w-full px-0 bg-bgColor">
         <Navbar />
 
-        <div className="w-full flex gap-2 lg:px-20 lg:gap-4 pt-5 pb-10 h-full">
+        <div className="w-full flex flex-col-reverse lg:flex-row gap-2 lg:px-20 lg:gap-4 pt-5 pb-10 h-full">
           {/* LEFT */}
-          <div className="w-1/4 flex flex-col gap-4 py-4">
+          <div className="hidden lg:flex w-1/4 flex-col gap-4 py-4">
             <ProfileCard user={user} />
             <FriendsCard friends={user?.friends} />
           </div>
 
           {/* CENTER */}
-          <div className="flex-1 h-full px-4 pt-5 flex flex-col gap-6 overflow-y-auto rounded-lg">
+          <div className="flex-1 w-full h-full  pt-5 flex flex-col gap-6 overflow-y-auto rounded-lg">
             <form
               onSubmit={handleSubmit(handlePostSubmit)}
               className="bg-primary px-4 rounded-lg"
@@ -279,17 +286,23 @@ const Home = () => {
           </div>
 
           {/* RIGHT */}
-          <div className="hidden w-1/4 h-full lg:flex flex-col pt-5 pb-10 gap-8 overflow-y-auto">
+          <div className="hiden lg:flex lg:w-1/4 h-full flex-col pt-5 pb-10 gap-8 overflow-y-auto">
             {/* FRIEND REQUEST */}
-            <FriendRequest request={friendRequest} handleFriendRequest={acceptFriendRequest} />
+            <FriendRequest
+              request={friendRequest}
+              handleFriendRequest={acceptFriendRequest}
+            />
 
             {/* SUGGESTED FRIENDS */}
-            <FriendSuggestion suggestion={suggestedFriends} handleRequest={handleFriendRequest}/>
+            <FriendSuggestion
+              suggestion={suggestedFriends}
+              handleRequest={handleFriendRequest}
+            />
           </div>
         </div>
-      </div>
 
-      {edit && <EditProfile />}
+        {edit && <EditProfile />}
+      </div>
     </>
   );
 };

@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import CustomButton from "./CustomButton";
 import { Link } from "react-router-dom";
 import { noProfile } from ".";
 
-const FriendRequest = ({  request, handleFriendRequest  }) => {
+const FriendRequest = ({ request, handleFriendRequest }) => {
+  const [showAllRequests, setShowAllRequests] = useState(false);
+
+  const displayedRequests = showAllRequests ? request : request.slice(0, 3);
+
   return (
     <div className="w-full bg-primary shadow-sm rounded-lg px-6 py-5">
       <div className="flex items-center justify-between text-xl text-ascent-1 pb-2 border-b border-[#66666645]">
@@ -12,7 +16,7 @@ const FriendRequest = ({  request, handleFriendRequest  }) => {
       </div>
 
       <div className="w-full flex flex-col gap-4 pt-4">
-        {request?.map(({ _id, requestFrom: from }) => (
+        {displayedRequests?.map(({ _id, requestFrom: from }) => (
           <div key={_id} className="flex items-center justify-between">
             <Link
               to={"/profile/" + from._id}
@@ -48,6 +52,15 @@ const FriendRequest = ({  request, handleFriendRequest  }) => {
           </div>
         ))}
       </div>
+
+      {request?.length > 3 && (
+        <button
+          onClick={() => setShowAllRequests(!showAllRequests)}
+          className="mt-4 text-sm text-ascent-2 hover:text-ascent-1"
+        >
+          {showAllRequests ? "See Less" : "See More"}
+        </button>
+      )}
     </div>
   );
 };
