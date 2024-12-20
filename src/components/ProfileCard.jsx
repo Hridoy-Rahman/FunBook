@@ -15,6 +15,7 @@ import moment from "moment";
 
 import { noProfile } from ".";
 import { updateProfile } from "../redux/userSlice";
+import EditProfile from "./EditProfile";
 
 const ProfileCard = ({ user }) => {
   const { user: data, edit } = useSelector((state) => state.user);
@@ -93,6 +94,7 @@ const ProfileCard = ({ user }) => {
           </div>
         </div>
       </div>
+      {edit && <EditProfile />}
     </div>
   );
 };
