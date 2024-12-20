@@ -2,7 +2,8 @@
 import axios from "axios";
 import { SetPosts } from "../redux/postSlice.js";
 
-const API_URL = "http://localhost:5001";
+const API_URL = "https://funbook-backend.onrender.com/"
+
 
 export const API = axios.create({
   baseURL: API_URL,
