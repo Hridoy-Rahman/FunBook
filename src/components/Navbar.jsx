@@ -47,13 +47,13 @@ const Navbar = () => {
     >
       <TextInputField
         placeholder="Search..."
-        styles="w-[5rem]  lg:w-[24rem] h-5 lg:h-full rounded-l-full py-2 text-sm"
+        styles="w-[5rem]  lg:w-[24rem] h-[24px] lg:h-[40px] rounded-l-full py-2 text-sm"
         register={register("search")}
       />
       <CustomButton
         title="Search"
         type="submit"
-        containerStyles='bg-[#0444a4] text-white text-sm px-2 h-6 lg:h-full lg:px-6 py-2.5 mt-2 rounded-r-full'
+        containerStyles='bg-[#0444a4] text-white text-sm px-2 h-[24px] lg:h-[40px] lg:px-6 py-2.5 mt-2 rounded-r-full'
       />
     </form>
 

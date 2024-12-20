@@ -4,11 +4,12 @@ import { noProfile } from ".";
 import { BsPersonFillAdd } from "react-icons/bs";
 
 const FriendSuggestion = ({ suggestion, handleRequest }) => {
-  const [showAllSuggestions, setShowAllSuggestions] = useState(false);
+  const [showMore, setShowMore] = useState(false);
+  const defaultCount = 3;
 
-  const displayedSuggestions = showAllSuggestions
+  const displayedSuggestions = showMore
     ? suggestion
-    : suggestion.slice(0, 3);
+    : suggestion?.slice(0, defaultCount);
 
   return (
     <div className="w-full bg-primary shadow-sm rounded-lg px-5 py-5 mt-5">
@@ -20,7 +21,6 @@ const FriendSuggestion = ({ suggestion, handleRequest }) => {
           <div className="flex items-center justify-between" key={friend._id}>
             <Link
               to={"/profile/" + friend?._id}
-              key={friend?._id}
               className="w-full flex gap-4 items-center cursor-pointer"
             >
               <img
@@ -28,7 +28,7 @@ const FriendSuggestion = ({ suggestion, handleRequest }) => {
                 alt={friend?.firstName}
                 className="w-10 h-10 object-cover rounded-full"
               />
-              <div className="flex-1 ">
+              <div className="flex-1">
                 <p className="text-base font-medium text-ascent-1">
                   {friend?.firstName} {friend?.lastName}
                 </p>
@@ -37,25 +37,21 @@ const FriendSuggestion = ({ suggestion, handleRequest }) => {
                 </span>
               </div>
             </Link>
-
-            <div className="flex gap-1">
-              <button
-                className="bg-[#0444a430] text-sm text-white p-1 rounded"
-                onClick={() => handleRequest(friend._id)}
-              >
-                <BsPersonFillAdd size={20} className="text-[#0f52b6]" />
-              </button>
-            </div>
+            <button
+              className="bg-[#0444a430] text-sm text-white p-1 rounded"
+              onClick={() => handleRequest(friend._id)}
+            >
+              <BsPersonFillAdd size={20} className="text-[#0f52b6]" />
+            </button>
           </div>
         ))}
       </div>
-
-      {suggestion?.length > 3 && (
+      {suggestion?.length > defaultCount && (
         <button
-          onClick={() => setShowAllSuggestions(!showAllSuggestions)}
-          className="mt-4 text-sm text-ascent-2 hover:text-ascent-1"
+          className="text-blue-500 text-sm mt-3 underline"
+          onClick={() => setShowMore(!showMore)}
         >
-          {showAllSuggestions ? "See Less" : "See More"}
+          {showMore ? "Show Less" : "See More"}
         </button>
       )}
     </div>

@@ -4,17 +4,17 @@ import { Link } from "react-router-dom";
 import { noProfile } from ".";
 
 const FriendRequest = ({ request, handleFriendRequest }) => {
-  const [showAllRequests, setShowAllRequests] = useState(false);
+  const [showMore, setShowMore] = useState(false);
+  const defaultCount = 3;
 
-  const displayedRequests = showAllRequests ? request : request.slice(0, 3);
+  const displayedRequests = showMore ? request : request?.slice(0, defaultCount);
 
   return (
     <div className="w-full bg-primary shadow-sm rounded-lg px-6 py-5">
       <div className="flex items-center justify-between text-xl text-ascent-1 pb-2 border-b border-[#66666645]">
-        <span> Friend Request</span>
+        <span>Friend Request</span>
         <span>{request?.length}</span>
       </div>
-
       <div className="w-full flex flex-col gap-4 pt-4">
         {displayedRequests?.map(({ _id, requestFrom: from }) => (
           <div key={_id} className="flex items-center justify-between">
@@ -36,7 +36,6 @@ const FriendRequest = ({ request, handleFriendRequest }) => {
                 </span>
               </div>
             </Link>
-
             <div className="flex gap-1">
               <CustomButton
                 title="Accept"
@@ -52,13 +51,12 @@ const FriendRequest = ({ request, handleFriendRequest }) => {
           </div>
         ))}
       </div>
-
-      {request?.length > 3 && (
+      {request?.length > defaultCount && (
         <button
-          onClick={() => setShowAllRequests(!showAllRequests)}
-          className="mt-4 text-sm text-ascent-2 hover:text-ascent-1"
+          className="text-blue-500 text-sm mt-3 underline"
+          onClick={() => setShowMore(!showMore)}
         >
-          {showAllRequests ? "See Less" : "See More"}
+          {showMore ? "Show Less" : "See More"}
         </button>
       )}
     </div>
