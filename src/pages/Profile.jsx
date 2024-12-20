@@ -45,7 +45,7 @@ const Profile = () => {
   return (
     <div className="w-full h-screen bg-bgColor overflow-auto">
       <Navbar />
-      <div className="w-full flex flex-col lg:flex-row gap-4 lg:px-20 md:pl-4 pt-5 pb-10">
+      <div className="w-full flex flex-col lg:flex-row gap-4 lg:px-20 md:pl-4 pt-9 pb-10">
         {/* LEFT */}
         <div className="w-full lg:w-1/4 md:w-1/3 flex flex-col gap-6 overflow-y-auto">
           <ProfileCard user={userInfo} />

@@ -286,7 +286,7 @@ const Home = () => {
           </div>
 
           {/* RIGHT */}
-          <div className="hiden lg:flex lg:w-1/4 h-full flex-col pt-5 pb-10 gap-8 overflow-y-auto">
+          <div className="hidden lg:flex lg:w-1/4 h-full flex-col pt-5 pb-10 gap-8 overflow-y-auto">
             {/* FRIEND REQUEST */}
             <FriendRequest
               request={friendRequest}

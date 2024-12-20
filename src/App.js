@@ -1,6 +1,8 @@
 import { Outlet, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Home, Login, Profile, Register, ResetPassword } from "./pages";
+import FriendRequestPage from "./pages/FriendRequestPage";
+import FriendSuggestionPage from "./pages/FriendSuggestionPage";
 
 function Layout() {
   const { user } = useSelector((state) => state.user);
@@ -22,6 +24,8 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/profile/:id?" element={<Profile />} />
+          <Route path="/friend-requests" element={<FriendRequestPage />} />
+          <Route path="/friend-suggestions" element={<FriendSuggestionPage />} />
         </Route>
 
         {/* Public Routes */}

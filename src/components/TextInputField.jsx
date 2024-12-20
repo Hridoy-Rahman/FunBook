@@ -15,7 +15,7 @@ const TextInputField = React.forwardRef(
           <p className={`text-ascent-2 text-sm mb-2 ${labelStyles}`}>{label}</p>
         )}
 
-        <div className="relative">
+        <div className="static">
           <input
             type={type === "password" && showPassword ? "text" : type}
             name={name}
@@ -27,7 +27,7 @@ const TextInputField = React.forwardRef(
           />
           {type === "password" && (
             <div
-              className="absolute right-4 top-3 text-gray-500 cursor-pointer"
+              className="relative left-full bottom-8 text-gray-300 cursor-pointer"
               onClick={togglePasswordVisibility}
             >
               {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
