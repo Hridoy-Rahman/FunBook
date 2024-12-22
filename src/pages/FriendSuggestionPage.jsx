@@ -8,23 +8,17 @@ import FriendSuggestion from "../components/FriendSuggestion";
 
 import {
   apiRequest,
-  deletePost,
-  fetchPosts,
   getUserInfo,
-  handleFileUpload,
-  likePost,
   sendFriendRequest,
 } from "../utils";
 import { useForm } from "react-hook-form";
 import { userLogin } from "../redux/userSlice";
 
 const FriendSuggestionPage = () => {
-  const { user, edit } = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
   const { posts } = useSelector((state) => state.post) || {};
   const [friendRequest, setFriendRequest] = useState([]);
   const [suggestedFriends, setSuggestedFriends] = useState([]);
-  const [errMsg, setErrMsg] = useState("");
-  const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
